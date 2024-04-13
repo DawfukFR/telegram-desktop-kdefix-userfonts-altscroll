@@ -19,18 +19,23 @@ options=('!debug')
 depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal'
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'xxhash'
          'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'libxcomposite' 'libxdamage' 'abseil-cpp' 'libdispatch'
-         'openssl' 'protobuf' 'glib2' 'libsigc++-3.0' 'kcoreaddons')
+         'openssl' 'protobuf' 'glib2' 'libsigc++-3.0'
+         'libxcomposite' 'libvpx' 'libxdamage' 'kcoreaddons' 'jemalloc')
 makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
              'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt'
-             'gobject-introspection' 'boost' 'fmt' 'mm-common' 'perl-xml-parser' 'python-packaging' 'patch')
+             'gobject-introspection' 'boost' 'fmt' 'mm-common' 'perl-xml-parser' 'python-packaging' 'dos2unix' 'patch')
 optdepends=('webkit2gtk: embedded browser features'
             'xdg-desktop-portal: desktop integration')
 source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
         "kde-theme-injection-fix.patch"
-        "mediaview-altscroll.patch") # https://github.com/telegramdesktop/tdesktop/pull/27245
+        "mediaview-altscroll.patch"
+        "block-sponsored_messages.patch"
+        "fix-lzma-link.patch")
 sha512sums=('5b580d36c8b8a90981c3541d4c148df37bb7ebdec0970bfbfe4c1a9a1175e3cf41c2a14d854d7d917482aa9086ee712844ec40780741df22ad6d42fcf3c48f1f'
             '7b3dd58276cbe2145887e3c127519a461be83485d9874c08d98d21e97bfb194a4355d0766746157b20d15027db8c265600b5d279cc07456153b2a2736832bae6'
-            '38ff8627090ac9766a8d409fa26cbd4381640e08abcb677f4524a5305d011aa0f6ce81d69313a01f0db5c1a3794805bff2a059095258f5e8d9bd1133550cca2e')
+            '38ff8627090ac9766a8d409fa26cbd4381640e08abcb677f4524a5305d011aa0f6ce81d69313a01f0db5c1a3794805bff2a059095258f5e8d9bd1133550cca2e'
+            'c662524ca4f4a8df021ee94696d84896ed9a271df321933942806dda4544ea25f51a650ec8b4fc72f9a2219ea54cbfaf37b9604124f7263c86f74f1d647587ae'
+            'd813a5ac6ff2208b693ecf494d7bf036087e223662f9f34aaaeafea0afe0fe798e867b9610f7221ea80319865502c20b61310d5a31634b888793873d63322463')
 
 prepare() {
     cd tdesktop-$pkgver-full
@@ -48,6 +53,8 @@ prepare() {
         rm "$ttf" && touch "$ttf"
     done && sed -i 's/DemiBold/Bold/g' \
         Telegram/lib_ui/ui/style/style_core_custom_font.cpp
+        
+    find "${srcdir}"/ -type f -exec dos2unix {} \;
 }
 
 build() {
