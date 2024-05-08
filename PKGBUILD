@@ -7,7 +7,7 @@
 # Contributor: hexchain <i@hexchain.org>
 
 pkgname=telegram-desktop-kdefix-userfonts-altscroll
-pkgver=4.16.8
+pkgver=5.0.1
 pkgrel=1
 conflicts=('telegram-desktop')
 provides=('telegram-desktop')
@@ -29,9 +29,9 @@ optdepends=('webkit2gtk: embedded browser features'
 source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
         "kde-theme-injection-fix.patch"
         "mediaview-altscroll.patch")
-sha512sums=('7d9d8ab4c62cf9e4f44ff879953f3d543427f7fd80682f6d08b58fb3dec481b0082086c3958e38b809b886359a76b1f5450142dbcfb58c867014d78f5fa19f60'
+sha512sums=('45b7833f20f01d78c09163e205af7d68afffcfc88075ba6af35dc6cbbce1f0205c0150b137ca09e6bdaf271240e4d1336411ad427bc27a2b2ad42dc435ee0ec2'
             '7b3dd58276cbe2145887e3c127519a461be83485d9874c08d98d21e97bfb194a4355d0766746157b20d15027db8c265600b5d279cc07456153b2a2736832bae6'
-            '38ff8627090ac9766a8d409fa26cbd4381640e08abcb677f4524a5305d011aa0f6ce81d69313a01f0db5c1a3794805bff2a059095258f5e8d9bd1133550cca2e')
+            'd0cde8cae20455da13bf7e59f216cc2c2175935ab44779321bfa698ead770782b0d67c0095bf703c7e95639d6e9dffb7ca3dcf879d94151dc1831aa3b8c33893')
 
 prepare() {
     cd tdesktop-$pkgver-full
@@ -48,7 +48,7 @@ prepare() {
     for ttf in Telegram/lib_ui/fonts/*.ttf; do
         rm "$ttf" && touch "$ttf"
     done && sed -i 's/DemiBold/Bold/g' \
-        Telegram/lib_ui/ui/style/style_core_custom_font.cpp
+        Telegram/lib_ui/ui/style/style_core_font.cpp
         
     find "${srcdir}"/ -type f -exec dos2unix {} \;
 }
